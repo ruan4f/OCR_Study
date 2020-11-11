@@ -10,6 +10,19 @@ import pytesseract
 import argparse
 import cv2
 
+# get grayscale image
+def get_grayscale(image):
+    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# noise removal
+def remove_noise(image):
+    return cv2.medianBlur(image,5)
+ 
+#thresholding
+def thresholding(image):
+    return cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+
+
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True,
@@ -22,6 +35,13 @@ args = vars(ap.parse_args())
 # and use Tesseract to localize each area of text in the input image
 image = cv2.imread(args["image"])
 rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+gray = get_grayscale(image)
+#thresh = thresholding(gray)
+
+image = gray
+
+
 results = pytesseract.image_to_data(rgb, output_type=Output.DICT)
 
 # loop over each of the individual text localizations
