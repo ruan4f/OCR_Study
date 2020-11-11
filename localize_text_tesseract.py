@@ -34,15 +34,13 @@ args = vars(ap.parse_args())
 # load the input image, convert it from BGR to RGB channel ordering,
 # and use Tesseract to localize each area of text in the input image
 image = cv2.imread(args["image"])
-rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
 gray = get_grayscale(image)
-#thresh = thresholding(gray)
+thresh = thresholding(gray)
 
-image = gray
+#image = thresh
 
-
-results = pytesseract.image_to_data(rgb, output_type=Output.DICT)
+rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+results = pytesseract.image_to_data(image, output_type=Output.DICT)
 
 # loop over each of the individual text localizations
 for i in range(0, len(results["text"])):
